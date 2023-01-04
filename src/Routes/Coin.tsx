@@ -1,7 +1,16 @@
 import { useQuery } from "react-query";
-import { useParams, Link } from "react-router-dom";
+import {
+  useParams,
+  Link,
+  Switch,
+  Route,
+  useRouteMatch,
+} from "react-router-dom";
 import styled from "styled-components";
 import { fetchInfo, fetchPrice } from "../api";
+import CandleStick from "./CandleStick";
+import Chart from "./Chart";
+import Price from "./Price";
 
 interface IcoinId {
   coinId: string;
@@ -111,7 +120,7 @@ const Title = styled.h1`
   font-size: 22px;
   font-weight: 600;
 `;
-const Price = styled.span`
+const PriceSpan = styled.span`
   font-size: 22px;
   font-weight: 600;
   margin: 9px 0;
@@ -145,9 +154,27 @@ const Rank = styled.div`
 
 const Main = styled.main``;
 
+const Tabs = styled.div`
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: aliceblue;
+  margin: 20px 0;
+  border-radius: 15px;
+`;
+
+const Tab = styled.span<{ isActive: boolean }>`
+  background-color: ${(props) => (props.isActive ? "#fff" : null)};
+  box-shadow: ${(props) =>
+    props.isActive ? "0px 2px 4px 0px rgba(0, 0, 0, 0.1)" : null};
+  padding: 10px 15px;
+  border-radius: 10px;
+`;
+
 const Description = styled.div`
   background-color: aliceblue;
-  border-radius: 20px;
+  border-radius: 15px;
   padding: 25px 22px;
   margin-bottom: 20px;
   span {
@@ -164,7 +191,7 @@ const Description = styled.div`
 
 const Reference = styled.div`
   background-color: aliceblue;
-  border-radius: 20px;
+  border-radius: 15px;
   padding: 25px 22px;
   margin-bottom: 20px;
   > span {
@@ -182,6 +209,9 @@ const RefLink = styled.a<Ireficon>`
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 10px;
+  :hover {
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+  }
   i {
     margin-right: 8px;
   }
@@ -199,6 +229,10 @@ const RefLink = styled.a<Ireficon>`
 
 function Coin() {
   const { coinId } = useParams<IcoinId>();
+  const chartMatch = useRouteMatch("/:coinId/chart");
+  const candleMatch = useRouteMatch("/:coinId/candle-stick");
+  const priceMatch = useRouteMatch("/:coinId/price");
+  console.log("chartMatch", chartMatch);
   const { isLoading: infoLoading, data: infoData } = useQuery<Iinfo>(
     ["info", coinId],
     () => fetchInfo(coinId)
@@ -228,7 +262,9 @@ function Coin() {
         <Header>
           <TitleDiv>
             <Title>{infoData?.name}</Title>
-            <Price>${Number(coinPrice?.toFixed(2)).toLocaleString()}</Price>
+            <PriceSpan>
+              ${Number(coinPrice?.toFixed(2)).toLocaleString()}
+            </PriceSpan>
             <Percent24h percent24h={percent24h || undefined}>
               {coinPrice && percent24h
                 ? percent24h >= 0
@@ -244,6 +280,28 @@ function Coin() {
           </Rank>
         </Header>
         <Main>
+          <Switch>
+            <Route path={"/:coinId/chart"}>
+              <Chart />
+            </Route>
+            <Route path={"/:coinId/price"}>
+              <Price />
+            </Route>
+            <Route path={"/:coinId/candle-stick"}>
+              <CandleStick />
+            </Route>
+          </Switch>
+          <Tabs>
+            <Tab isActive={chartMatch !== null}>
+              <Link to={`/${coinId}/chart`}>Line Chart</Link>
+            </Tab>
+            <Tab isActive={candleMatch !== null}>
+              <Link to={`/${coinId}/candle-stick`}>CandleStick</Link>
+            </Tab>
+            <Tab isActive={priceMatch !== null}>
+              <Link to={`/${coinId}/price`}>Price</Link>
+            </Tab>
+          </Tabs>
           <Description>
             <span>Description</span>
             <p>{infoData?.description}</p>
