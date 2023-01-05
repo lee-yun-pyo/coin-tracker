@@ -127,7 +127,7 @@ const PriceSpan = styled.span`
 `;
 const Percent24h = styled.span<IPercent24h>`
   color: ${(props) =>
-    props.percent24h && props.percent24h >= 0 ? "#4880EE" : "#DA5157"};
+    props.percent24h && props.percent24h >= 0 ? "#DA5157" : "#4880EE"};
   font-weight: 600;
   span {
     color: gray;
@@ -282,13 +282,13 @@ function Coin() {
         <Main>
           <Switch>
             <Route path={"/:coinId/chart"}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
             <Route path={"/:coinId/price"}>
-              <Price />
+              <Price coinId={coinId} />
             </Route>
             <Route path={"/:coinId/candle-stick"}>
-              <CandleStick />
+              <CandleStick coinId={coinId} />
             </Route>
           </Switch>
           <Tabs>
