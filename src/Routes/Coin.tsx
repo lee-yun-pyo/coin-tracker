@@ -285,7 +285,14 @@ function Coin() {
               <Chart coinId={coinId} />
             </Route>
             <Route path={"/:coinId/price"}>
-              <Price coinId={coinId} />
+              <Price
+                percent30m={priceData?.quotes.USD.percent_change_30m}
+                percent1h={priceData?.quotes.USD.percent_change_1h}
+                percent12h={priceData?.quotes.USD.percent_change_12h}
+                percent7d={priceData?.quotes.USD.percent_change_7d}
+                percent30d={priceData?.quotes.USD.percent_change_30d}
+                percent1y={priceData?.quotes.USD.percent_change_1y}
+              />
             </Route>
             <Route path={"/:coinId/candle-stick"}>
               <CandleStick coinId={coinId} />
