@@ -69,7 +69,7 @@ function Price({
   return (
     <Container>
       {percentList.map((item) => (
-        <Box>
+        <Box key={item.text}>
           <Time>From {item.text} ago</Time>
           <PercentBox percent={item.value}>
             <Percent>
