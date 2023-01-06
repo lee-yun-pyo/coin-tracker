@@ -2,33 +2,40 @@ import styled from "styled-components";
 import { Link, useRouteMatch, Switch, Route } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
+import Footer from "../components/Footer";
 
-export const Container = styled.div`
+const Container = styled.div`
   max-width: 480px;
   margin: 0 auto;
   padding: 0 20px;
 `;
 
-export const Header = styled.header`
+const Loading = styled.span`
+  font-size: 25px;
+  display: block;
+  text-align: center;
+`;
+
+const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 20vh;
 `;
 
-export const Title = styled.h1`
+const Title = styled.h1`
   font-size: 40px;
   font-weight: 600;
 `;
 
-export const CoinList = styled.div`
+const CoinList = styled.div`
   display: grid;
   justify-items: center;
   gap: 20px;
   grid-template-columns: repeat(3, 1fr);
 `;
 
-export const Coin = styled.div`
+const Coin = styled.div`
   width: 120px;
   display: flex;
   flex-direction: column;
@@ -50,7 +57,7 @@ export const Coin = styled.div`
   }
 `;
 
-export const Name = styled.p`
+const Name = styled.p`
   max-width: 100px;
   text-align: center;
   white-space: nowrap;
@@ -59,17 +66,17 @@ export const Name = styled.p`
   height: 20px;
 `;
 
-export const Paging = styled.div`
+const Paging = styled.div`
   margin-top: 50px;
   margin-bottom: 50px;
 `;
 
-export const PageList = styled.ul`
+const PageList = styled.ul`
   display: flex;
   justify-content: center;
 `;
 
-export const Page = styled.li<{ isActive: boolean }>`
+const Page = styled.li<{ isActive: boolean }>`
   background-color: ${(props) => (props.isActive ? "tomato" : "aliceblue")};
   border-radius: 10px;
   margin: 0 20px;
@@ -86,7 +93,7 @@ export const Page = styled.li<{ isActive: boolean }>`
   }
 `;
 
-export interface Icoin {
+interface Icoin {
   id: string;
   name: string;
   symbol: string;
@@ -109,7 +116,7 @@ function Home() {
         <Title>Coin</Title>
       </Header>
       {isLoading ? (
-        "Loading"
+        <Loading>Loading</Loading>
       ) : (
         <>
           {homeMatch?.isExact ? (
@@ -200,6 +207,7 @@ function Home() {
           ) : (
             <></>
           )}
+          <Footer />
         </>
       )}
     </Container>

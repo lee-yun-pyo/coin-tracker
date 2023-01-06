@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import { fetchInfo, fetchPrice } from "../api";
+import Footer from "../components/Footer";
 import CandleStick from "./CandleStick";
 import Chart from "./Chart";
 import Price from "./Price";
@@ -89,7 +90,13 @@ interface IPercent24h {
   percent24h: number | undefined;
 }
 
-const Loading = styled.span``;
+const Loading = styled.span`
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`;
 
 const Container = styled.div`
   max-width: 480px;
@@ -139,6 +146,7 @@ const Rank = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
   padding: 12px 20px;
   border-radius: 12px;
   background-color: aliceblue;
@@ -162,6 +170,7 @@ const Tabs = styled.div`
   background-color: aliceblue;
   margin: 20px 0;
   border-radius: 15px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
@@ -177,6 +186,7 @@ const Description = styled.div`
   border-radius: 15px;
   padding: 25px 22px;
   margin-bottom: 20px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
   span {
     font-weight: 600;
     font-size: 18px;
@@ -194,6 +204,7 @@ const Reference = styled.div`
   border-radius: 15px;
   padding: 25px 22px;
   margin-bottom: 20px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
   > span {
     font-weight: 600;
     font-size: 18px;
@@ -244,127 +255,131 @@ function Coin() {
   const percent24h = priceData?.quotes.USD.percent_change_24h;
   const coinPrice = priceData?.quotes.USD.price;
   const loading = infoLoading || priceLoading;
-  return loading ? (
-    <Loading>Loading</Loading>
-  ) : (
-    <>
-      <Container>
-        <Nav>
-          <BtnToHome>
-            <Link to={"/"}>
-              <i className="fa-solid fa-chevron-left fa-2x"></i>
-            </Link>
-          </BtnToHome>
-          <BtnToHome>
-            <i className="fa-regular fa-moon fa-2x"></i>
-          </BtnToHome>
-        </Nav>
-        <Header>
-          <TitleDiv>
-            <Title>{infoData?.name}</Title>
-            <PriceSpan>
-              ${Number(coinPrice?.toFixed(2)).toLocaleString()}
-            </PriceSpan>
-            <Percent24h percent24h={percent24h || undefined}>
-              {coinPrice && percent24h
-                ? percent24h >= 0
-                  ? `+$${((coinPrice * Math.abs(percent24h)) / 100).toFixed(2)}`
-                  : `-$${((coinPrice * Math.abs(percent24h)) / 100).toFixed(2)}`
-                : undefined}{" "}
-              ({percent24h}%) <span>24h ago</span>
-            </Percent24h>
-          </TitleDiv>
-          <Rank>
-            <span>Rank</span>
-            <p>{infoData?.rank}</p>
-          </Rank>
-        </Header>
-        <Main>
-          <Switch>
-            <Route path={"/:coinId/chart"}>
-              <Chart coinId={coinId} />
-            </Route>
-            <Route path={"/:coinId/price"}>
-              <Price
-                percent30m={priceData?.quotes.USD.percent_change_30m}
-                percent1h={priceData?.quotes.USD.percent_change_1h}
-                percent12h={priceData?.quotes.USD.percent_change_12h}
-                percent7d={priceData?.quotes.USD.percent_change_7d}
-                percent30d={priceData?.quotes.USD.percent_change_30d}
-                percent1y={priceData?.quotes.USD.percent_change_1y}
-              />
-            </Route>
-            <Route path={"/:coinId/candle-stick"}>
-              <CandleStick coinId={coinId} />
-            </Route>
-          </Switch>
-          <Tabs>
-            <Tab isActive={chartMatch !== null}>
-              <Link to={`/${coinId}/chart`}>Line Chart</Link>
-            </Tab>
-            <Tab isActive={candleMatch !== null}>
-              <Link to={`/${coinId}/candle-stick`}>CandleStick</Link>
-            </Tab>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinId}/price`}>Price</Link>
-            </Tab>
-          </Tabs>
-          <Description>
-            <span>Description</span>
-            <p>{infoData?.description}</p>
-          </Description>
-          <Reference>
-            <span>Reference Link</span>
-            <div>
-              <RefLink
-                target="_blank"
-                iconColor="#171515"
-                isHref={infoData?.links.source_code}
-                href={infoData?.links.source_code}
-              >
-                <div>
-                  <i className="fa-brands fa-github fa-lg"></i>
-                  <span>Github</span>
-                </div>
-              </RefLink>
-              <RefLink
-                target="_blank"
-                iconColor="#FF4500"
-                isHref={infoData?.links.reddit}
-                href={infoData?.links.reddit}
-              >
-                <div>
-                  <i className="fa-brands fa-reddit fa-lg"></i>
-                  <span>Reddit</span>
-                </div>
-              </RefLink>
-              <RefLink
-                target="_blank"
-                iconColor="#FE0000"
-                isHref={infoData?.links.youtube}
-                href={infoData?.links.youtube}
-              >
-                <div>
-                  <i className="fa-brands fa-youtube fa-lg"></i>
-                  <span>Youtube</span>
-                </div>
-              </RefLink>
-              <RefLink
-                target="_blank"
-                iconColor="#1877F2"
-                isHref={infoData?.links.facebook}
-                href={infoData?.links.facebook}
-              >
-                <div>
-                  <i className="fa-brands fa-facebook fa-lg"></i>
-                  <span>Facebook</span>
-                </div>
-              </RefLink>
-            </div>
-          </Reference>
-        </Main>
-      </Container>
-    </>
+  return (
+    <Container>
+      {loading ? (
+        <Loading>Loading</Loading>
+      ) : (
+        <>
+          <Nav>
+            <BtnToHome>
+              <Link to={"/"}>
+                <i className="fa-solid fa-chevron-left fa-2x"></i>
+              </Link>
+            </BtnToHome>
+          </Nav>
+          <Header>
+            <TitleDiv>
+              <Title>{infoData?.name}</Title>
+              <PriceSpan>
+                ${Number(coinPrice?.toFixed(2)).toLocaleString()}
+              </PriceSpan>
+              <Percent24h percent24h={percent24h || undefined}>
+                {coinPrice && percent24h
+                  ? percent24h >= 0
+                    ? `+$${((coinPrice * Math.abs(percent24h)) / 100).toFixed(
+                        2
+                      )}`
+                    : `-$${((coinPrice * Math.abs(percent24h)) / 100).toFixed(
+                        2
+                      )}`
+                  : undefined}{" "}
+                ({percent24h}%) <span>24h ago</span>
+              </Percent24h>
+            </TitleDiv>
+            <Rank>
+              <span>Rank</span>
+              <p>{infoData?.rank}</p>
+            </Rank>
+          </Header>
+          <Main>
+            <Switch>
+              <Route path={"/:coinId/chart"}>
+                <Chart coinId={coinId} />
+              </Route>
+              <Route path={"/:coinId/price"}>
+                <Price
+                  percent30m={priceData?.quotes.USD.percent_change_30m}
+                  percent1h={priceData?.quotes.USD.percent_change_1h}
+                  percent12h={priceData?.quotes.USD.percent_change_12h}
+                  percent7d={priceData?.quotes.USD.percent_change_7d}
+                  percent30d={priceData?.quotes.USD.percent_change_30d}
+                  percent1y={priceData?.quotes.USD.percent_change_1y}
+                />
+              </Route>
+              <Route path={"/:coinId/candle-stick"}>
+                <CandleStick coinId={coinId} />
+              </Route>
+            </Switch>
+            <Tabs>
+              <Tab isActive={chartMatch !== null}>
+                <Link to={`/${coinId}/chart`}>Line Chart</Link>
+              </Tab>
+              <Tab isActive={candleMatch !== null}>
+                <Link to={`/${coinId}/candle-stick`}>CandleStick</Link>
+              </Tab>
+              <Tab isActive={priceMatch !== null}>
+                <Link to={`/${coinId}/price`}>Price</Link>
+              </Tab>
+            </Tabs>
+            <Description>
+              <span>Description</span>
+              <p>{infoData?.description}</p>
+            </Description>
+            <Reference>
+              <span>Reference Link</span>
+              <div>
+                <RefLink
+                  target="_blank"
+                  iconColor="#171515"
+                  isHref={infoData?.links.source_code}
+                  href={infoData?.links.source_code}
+                >
+                  <div>
+                    <i className="fa-brands fa-github fa-lg"></i>
+                    <span>Github</span>
+                  </div>
+                </RefLink>
+                <RefLink
+                  target="_blank"
+                  iconColor="#FF4500"
+                  isHref={infoData?.links.reddit}
+                  href={infoData?.links.reddit}
+                >
+                  <div>
+                    <i className="fa-brands fa-reddit fa-lg"></i>
+                    <span>Reddit</span>
+                  </div>
+                </RefLink>
+                <RefLink
+                  target="_blank"
+                  iconColor="#FE0000"
+                  isHref={infoData?.links.youtube}
+                  href={infoData?.links.youtube}
+                >
+                  <div>
+                    <i className="fa-brands fa-youtube fa-lg"></i>
+                    <span>Youtube</span>
+                  </div>
+                </RefLink>
+                <RefLink
+                  target="_blank"
+                  iconColor="#1877F2"
+                  isHref={infoData?.links.facebook}
+                  href={infoData?.links.facebook}
+                >
+                  <div>
+                    <i className="fa-brands fa-facebook fa-lg"></i>
+                    <span>Facebook</span>
+                  </div>
+                </RefLink>
+              </div>
+            </Reference>
+          </Main>
+          <Footer />
+        </>
+      )}
+    </Container>
   );
 }
 
