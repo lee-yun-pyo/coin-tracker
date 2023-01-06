@@ -8,12 +8,14 @@ const Container = styled.div`
   max-width: 480px;
   margin: 0 auto;
   padding: 0 20px;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 
 const Loading = styled.span`
   font-size: 25px;
   display: block;
   text-align: center;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Header = styled.header`
@@ -26,6 +28,7 @@ const Header = styled.header`
 const Title = styled.h1`
   font-size: 40px;
   font-weight: 600;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const CoinList = styled.div`
@@ -41,7 +44,7 @@ const Coin = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: aliceblue;
+  background-color: ${(props) => props.theme.divColor};
   padding: 18px;
   border-radius: 15px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
@@ -64,6 +67,7 @@ const Name = styled.p`
   overflow: hidden;
   text-overflow: ellipsis;
   height: 20px;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Paging = styled.div`
@@ -77,10 +81,11 @@ const PageList = styled.ul`
 `;
 
 const Page = styled.li<{ isActive: boolean }>`
-  background-color: ${(props) => (props.isActive ? "tomato" : "aliceblue")};
-  border-radius: 10px;
+  background-color: ${(props) => props.theme.divColor};
+  border-radius: ${(props) => (props.isActive ? "50%" : "3px")};
   margin: 0 20px;
   font-size: 18px;
+
   :last-child {
     margin: 0;
   }
@@ -88,7 +93,8 @@ const Page = styled.li<{ isActive: boolean }>`
     margin: 0;
   }
   a {
-    padding: 15px;
+    color: ${(props) => props.theme.textColor};
+    padding: 15px 19px;
     display: block;
   }
 `;

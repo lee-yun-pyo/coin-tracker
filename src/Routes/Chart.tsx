@@ -2,6 +2,8 @@ import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { isDarkAtom } from "../atom";
 
 interface IPriceProps {
   coinId: string;
@@ -23,9 +25,11 @@ const Message = styled.span`
   font-weight: 600;
   text-align: center;
   display: block;
+  color: ${(props) => props.theme.textColor};
 `;
 
 function Chart({ coinId }: IPriceProps) {
+  const isDark = useRecoilState(isDarkAtom);
   const { isLoading, data } = useQuery<ICoinHistory[]>(
     ["history", coinId],
     () => fetchCoinHistory(coinId)
@@ -73,7 +77,7 @@ function Chart({ coinId }: IPriceProps) {
             },
             stroke: { curve: "smooth", width: 4 },
             theme: {
-              mode: "light",
+              mode: isDark[0] ? "light" : "dark",
             },
             grid: {
               show: false,

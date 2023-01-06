@@ -2,6 +2,8 @@ import { useQuery } from "react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { isDarkAtom } from "../atom";
 
 interface IPriceProps {
   coinId: string;
@@ -23,9 +25,11 @@ const Message = styled.span`
   font-weight: 600;
   text-align: center;
   display: block;
+  color: ${(props) => props.theme.textColor};
 `;
 
 function CandleStick({ coinId }: IPriceProps) {
+  const isDark = useRecoilState(isDarkAtom);
   const { isLoading, data } = useQuery<ICoinHistory[]>(
     ["history", coinId],
     () => fetchCoinHistory(coinId)
@@ -49,6 +53,9 @@ function CandleStick({ coinId }: IPriceProps) {
           type="candlestick"
           series={[{ data: chartData }]}
           options={{
+            theme: {
+              mode: isDark[0] ? "light" : "dark",
+            },
             chart: {
               height: 500,
               width: 500,

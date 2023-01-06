@@ -96,12 +96,15 @@ const Loading = styled.span`
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin-top: 30px;
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Container = styled.div`
   max-width: 480px;
   margin: 0 auto;
   padding: 0 20px;
+  background-color: ${(props) => props.theme.bgColor};
 `;
 const Nav = styled.div`
   display: flex;
@@ -111,7 +114,7 @@ const Nav = styled.div`
 const BtnToHome = styled.button`
   background-color: transparent;
   border: none;
-  color: #62626c;
+  color: ${(props) => props.theme.grayText};
 `;
 const Header = styled.header`
   display: flex;
@@ -126,18 +129,20 @@ const TitleDiv = styled.div`
 const Title = styled.h1`
   font-size: 22px;
   font-weight: 600;
+  color: ${(props) => props.theme.textColor};
 `;
 const PriceSpan = styled.span`
   font-size: 22px;
   font-weight: 600;
   margin: 9px 0;
+  color: ${(props) => props.theme.textColor};
 `;
 const Percent24h = styled.span<IPercent24h>`
   color: ${(props) =>
     props.percent24h && props.percent24h >= 0 ? "#DA5157" : "#4880EE"};
   font-weight: 600;
   span {
-    color: gray;
+    color: ${(props) => props.theme.grayText};
     font-weight: normal;
     margin-left: 5px;
   }
@@ -146,17 +151,18 @@ const Rank = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
   padding: 12px 20px;
   border-radius: 12px;
-  background-color: aliceblue;
+  background-color: ${(props) => props.theme.divColor};
   span {
     font-size: 18px;
+    color: ${(props) => props.theme.textColor};
   }
   p {
     margin-top: 5px;
     font-size: 25px;
     font-weight: 600;
+    color: ${(props) => props.theme.textColor};
   }
 `;
 
@@ -167,26 +173,27 @@ const Tabs = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background-color: aliceblue;
+  background-color: ${(props) => props.theme.divColor};
   margin: 20px 0;
   border-radius: 15px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
 `;
 
 const Tab = styled.span<{ isActive: boolean }>`
-  background-color: ${(props) => (props.isActive ? "#fff" : null)};
-  box-shadow: ${(props) =>
-    props.isActive ? "0px 2px 4px 0px rgba(0, 0, 0, 0.1)" : null};
   padding: 10px 15px;
   border-radius: 10px;
+  a {
+    color: ${(props) =>
+      props.isActive ? props.theme.accentColor : props.theme.textColor};
+    font-weight: ${(props) => (props.isActive ? "700" : "500")};
+  }
 `;
 
 const Description = styled.div`
-  background-color: aliceblue;
+  background-color: ${(props) => props.theme.divColor};
   border-radius: 15px;
   padding: 25px 22px;
   margin-bottom: 20px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+  color: ${(props) => props.theme.textColor};
   span {
     font-weight: 600;
     font-size: 18px;
@@ -200,11 +207,11 @@ const Description = styled.div`
 `;
 
 const Reference = styled.div`
-  background-color: aliceblue;
+  background-color: ${(props) => props.theme.divColor};
   border-radius: 15px;
   padding: 25px 22px;
   margin-bottom: 20px;
-  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+  color: ${(props) => props.theme.textColor};
   > span {
     font-weight: 600;
     font-size: 18px;
@@ -215,7 +222,7 @@ const Reference = styled.div`
 
 const RefLink = styled.a<Ireficon>`
   display: ${(props) => (props.isHref ? "block" : "none")};
-  background-color: #ffffff;
+  background-color: ${(props) => props.theme.grayDiv};
   color: ${(props) => props.iconColor};
   padding: 10px;
   border-radius: 10px;
@@ -232,8 +239,7 @@ const RefLink = styled.a<Ireficon>`
     justify-content: center;
   }
   span {
-    color: #000;
-    font-weight: 600;
+    color: ${(props) => props.theme.textColor};
     font-size: 16px;
   }
 `;
@@ -243,7 +249,6 @@ function Coin() {
   const chartMatch = useRouteMatch("/:coinId/chart");
   const candleMatch = useRouteMatch("/:coinId/candle-stick");
   const priceMatch = useRouteMatch("/:coinId/price");
-  console.log("chartMatch", chartMatch);
   const { isLoading: infoLoading, data: infoData } = useQuery<Iinfo>(
     ["info", coinId],
     () => fetchInfo(coinId)

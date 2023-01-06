@@ -17,7 +17,7 @@ const Container = styled.div`
 `;
 
 const Box = styled.div`
-  background-color: aliceblue;
+  background-color: ${(props) => props.theme.divColor};
   padding: 20px;
   border-radius: 15px;
   width: 100%;
@@ -27,7 +27,7 @@ const Time = styled.span`
   font-size: 18px;
   display: block;
   margin-bottom: 10px;
-  color: rgba(0, 0, 0, 0.5);
+  color: ${(props) => props.theme.grayText};
   font-weight: 600;
 `;
 
