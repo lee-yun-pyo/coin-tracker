@@ -1,10 +1,10 @@
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import Home from "./Routes/Home";
 import Coin from "./Routes/Coin";
 
 function Router() {
   return (
-    <BrowserRouter>
+    <HashRouter basename={process.env.PUBLIC_URL}>
       <Switch>
         <Route path="/pages/:page">
           <Home />
@@ -16,7 +16,7 @@ function Router() {
           <Home />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
