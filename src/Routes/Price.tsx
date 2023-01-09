@@ -29,6 +29,12 @@ const Time = styled.span`
   margin-bottom: 10px;
   color: ${(props) => props.theme.grayText};
   font-weight: 600;
+  @media screen and (max-width: 440px) {
+    font-size: 15px;
+  }
+  @media screen and (max-width: 400px) {
+    font-size: 13px;
+  }
 `;
 
 const PercentBox = styled.div<{ percent: number | undefined }>`
@@ -48,6 +54,12 @@ const PercentBox = styled.div<{ percent: number | undefined }>`
 const Percent = styled.span`
   font-size: 35px;
   font-weight: 600;
+  @media screen and (max-width: 440px) {
+    font-size: 30px;
+  }
+  @media screen and (max-width: 400px) {
+    font-size: 25px;
+  }
 `;
 
 function Price({
@@ -66,6 +78,7 @@ function Price({
     { text: "30d", value: percent30d },
     { text: "1y", value: percent1y },
   ];
+  const mql = matchMedia("screen and (min-width: 400px)");
   return (
     <Container>
       {percentList.map((item) => (
@@ -79,14 +92,26 @@ function Price({
             </Percent>
             {item.value ? (
               item.value > 0 ? (
-                <i className="fa-solid fa-arrow-trend-up fa-2x"></i>
+                mql.matches ? (
+                  <i className="fa-solid fa-arrow-trend-up fa-2x"></i>
+                ) : (
+                  <i className="fa-solid fa-arrow-trend-up fa-lg"></i>
+                )
               ) : item.value < 0 ? (
-                <i className="fa-solid fa-arrow-trend-down fa-2x"></i>
-              ) : (
+                mql.matches ? (
+                  <i className="fa-solid fa-arrow-trend-down fa-2x"></i>
+                ) : (
+                  <i className="fa-solid fa-arrow-trend-down fa-lg"></i>
+                )
+              ) : mql.matches ? (
                 <i className="fa-solid fa-minus fa-2x"></i>
+              ) : (
+                <i className="fa-solid fa-minus fa-lg"></i>
               )
-            ) : (
+            ) : mql.matches ? (
               <i className="fa-solid fa-minus fa-2x"></i>
+            ) : (
+              <i className="fa-solid fa-minus fa-lg"></i>
             )}
           </PercentBox>
         </Box>

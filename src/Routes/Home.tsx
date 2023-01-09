@@ -37,6 +37,9 @@ const CoinList = styled.div`
   justify-items: center;
   gap: 20px;
   grid-template-columns: repeat(3, 1fr);
+  @media screen and (max-width: 400px) {
+    gap: 15px;
+  }
 `;
 
 const Coin = styled.div`
@@ -59,6 +62,12 @@ const Coin = styled.div`
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.25);
     transform: scale(1.1);
   }
+  @media screen and (max-width: 450px) {
+    width: 105px;
+  }
+  @media screen and (max-width: 370px) {
+    width: 100px;
+  }
 `;
 
 const Name = styled.p`
@@ -69,6 +78,9 @@ const Name = styled.p`
   text-overflow: ellipsis;
   height: 20px;
   color: ${(props) => props.theme.textColor};
+  @media screen and (max-width: 450px) {
+    width: 90px;
+  }
 `;
 
 const Paging = styled.div`
