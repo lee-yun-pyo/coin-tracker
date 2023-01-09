@@ -9,6 +9,7 @@ import {
 import styled from "styled-components";
 import { fetchInfo, fetchPrice } from "../api";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 import CandleStick from "./CandleStick";
 import Chart from "./Chart";
 import Price from "./Price";
@@ -86,10 +87,6 @@ interface Iprice {
   };
 }
 
-interface IPercent24h {
-  percent24h: number | undefined;
-}
-
 const Loading = styled.span`
   font-size: 25px;
   display: flex;
@@ -115,55 +112,6 @@ const BtnToHome = styled.button`
   background-color: transparent;
   border: none;
   color: ${(props) => props.theme.grayText};
-`;
-const Header = styled.header`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 30px 0;
-`;
-const TitleDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const Title = styled.h1`
-  font-size: 22px;
-  font-weight: 600;
-  color: ${(props) => props.theme.textColor};
-`;
-const PriceSpan = styled.span`
-  font-size: 22px;
-  font-weight: 600;
-  margin: 9px 0;
-  color: ${(props) => props.theme.textColor};
-`;
-const Percent24h = styled.span<IPercent24h>`
-  color: ${(props) =>
-    props.percent24h && props.percent24h >= 0 ? "#DA5157" : "#4880EE"};
-  font-weight: 600;
-  span {
-    color: ${(props) => props.theme.grayText};
-    font-weight: normal;
-    margin-left: 5px;
-  }
-`;
-const Rank = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 20px;
-  border-radius: 12px;
-  background-color: ${(props) => props.theme.divColor};
-  span {
-    font-size: 18px;
-    color: ${(props) => props.theme.textColor};
-  }
-  p {
-    margin-top: 5px;
-    font-size: 25px;
-    font-weight: 600;
-    color: ${(props) => props.theme.textColor};
-  }
 `;
 
 const Main = styled.main``;
@@ -273,30 +221,12 @@ function Coin() {
               </Link>
             </BtnToHome>
           </Nav>
-          <Header>
-            <TitleDiv>
-              <Title>{infoData?.name}</Title>
-              <PriceSpan>
-                ${Number(coinPrice?.toFixed(2)).toLocaleString()}
-              </PriceSpan>
-              <Percent24h percent24h={percent24h || undefined}>
-                {coinPrice && percent24h
-                  ? percent24h >= 0
-                    ? `+$${((coinPrice * Math.abs(percent24h)) / 100).toFixed(
-                        2
-                      )}`
-                    : `-$${((coinPrice * Math.abs(percent24h)) / 100).toFixed(
-                        2
-                      )}`
-                  : undefined}{" "}
-                ({percent24h}%) <span>24h ago</span>
-              </Percent24h>
-            </TitleDiv>
-            <Rank>
-              <span>Rank</span>
-              <p>{infoData?.rank}</p>
-            </Rank>
-          </Header>
+          <Header
+            name={infoData?.name}
+            rank={infoData?.rank}
+            price={coinPrice}
+            per24={percent24h}
+          />
           <Main>
             <Switch>
               <Route path={"/:coinId/chart"}>
