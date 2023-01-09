@@ -32,7 +32,10 @@ function Chart({ coinId }: IPriceProps) {
   const isDark = useRecoilState(isDarkAtom);
   const { isLoading, data } = useQuery<ICoinHistory[]>(
     ["history", coinId],
-    () => fetchCoinHistory(coinId)
+    () => fetchCoinHistory(coinId),
+    {
+      refetchInterval: 5000,
+    }
   );
   let howIncrease = 0;
   if (Array.isArray(data)) {

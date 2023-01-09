@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { Link, useRouteMatch, Switch, Route } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchCoins } from "../api";
@@ -118,6 +119,9 @@ function Home() {
   const homeList = [true, false, false];
   return (
     <Container>
+      <Helmet>
+        <title>Coin</title>
+      </Helmet>
       <Header>
         <Title>Coin</Title>
       </Header>

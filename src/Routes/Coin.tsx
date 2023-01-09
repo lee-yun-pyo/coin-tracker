@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import {
   useParams,
   Link,
@@ -203,7 +204,10 @@ function Coin() {
   );
   const { isLoading: priceLoading, data: priceData } = useQuery<Iprice>(
     ["price", coinId],
-    () => fetchPrice(coinId)
+    () => fetchPrice(coinId),
+    {
+      refetchInterval: 5000,
+    }
   );
   const percent24h = priceData?.quotes.USD.percent_change_24h;
   const coinPrice = priceData?.quotes.USD.price;
@@ -214,6 +218,9 @@ function Coin() {
         <Loading>Loading</Loading>
       ) : (
         <>
+          <Helmet>
+            <title>{infoData?.name}</title>
+          </Helmet>
           <Nav>
             <BtnToHome>
               <Link to={"/"}>
